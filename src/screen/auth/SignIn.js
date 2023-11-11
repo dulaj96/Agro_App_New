@@ -13,10 +13,15 @@ import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
-import {GoogleSignin, GoogleSigninButton} from "@react-native-google-signin/google-signin";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+} from '@react-native-google-signin/google-signin';
+import {useLoginMutation} from '../../store/services/AuthService';
 
 const SignIn = () => {
   const navigation = useNavigation();
+  const [login, {isLoading}] = useLoginMutation();
 
   const [data, setData] = useState({
     email: '',
@@ -59,41 +64,33 @@ const SignIn = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn({});
-      const {accessToken} = await GoogleSignin.getTokens();
-      const {
-        user: {email, givenName, familyName, photo},
-      } = userInfo;
+      const {idToken} = await GoogleSignin.getTokens();
+      console.log('id token', idToken);
+      // const {
+      //   user: {email, givenName, familyName, photo},
+      // } = userInfo;
 
-      const userFullName = `${givenName} ${familyName}`;
-      console.log('email', email, givenName, familyName, photo, accessToken);
+      // const userFullName = `${givenName} ${familyName}`;
+      // console.log('email', email, givenName, familyName, photo, idToken);
+      await login(idToken);
     } catch (error) {
-      // eslint-disable-next-line no-undef
-      // toast?.show('Something went wrong. Please try again!', {
-      //   type: 'normal',
-      //   placement: 'bottom',
-      //   duration: 4000,
-      // });
       console.log(error);
-      // throw error;
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle='light-content' />
+      <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
         <Text style={styles.text_header}>Welcome!</Text>
       </View>
-      <Animatable.View
-        animation="fadeInUpBig"
-        style={styles.footer}
-      >
+      <Animatable.View animation="fadeInUpBig" style={styles.footer}>
         <Text style={styles.text_footer}>Email</Text>
         <View style={styles.action}>
           <FontAwesome name="user-o" color="#05375a" size={20} />
           <TextInput
             placeholder="Your Email"
-            placeholderTextColor='#666666'
+            placeholderTextColor="#666666"
             style={styles.textInput}
             autoCapitalize="none"
             onChangeText={val => textInputChange(val)}
@@ -110,7 +107,7 @@ const SignIn = () => {
           <FontAwesome name="lock" color="#05375a" size={20} />
           <TextInput
             placeholder="Your Password"
-            placeholderTextColor='#666666'
+            placeholderTextColor="#666666"
             secureTextEntry={data.secureTextEntry ? true : false}
             style={styles.textInput}
             autoCapitalize="none"
@@ -126,7 +123,9 @@ const SignIn = () => {
         </View>
 
         <View style={styles.button}>
-          <TouchableOpacity style={styles.signIn} onPress={() => navigation.navigate('BottomNavigator')}>
+          <TouchableOpacity
+            style={styles.signIn}
+            onPress={() => navigation.navigate('BottomNavigator')}>
             <LinearGradient
               colors={['#08d4c4', '#01ab9d']}
               style={styles.signIn}>

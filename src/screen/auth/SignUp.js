@@ -70,21 +70,18 @@ const SignUp = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle='light-content' />
+      <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
         <Text style={styles.text_header}>Register Now!</Text>
       </View>
 
-      <Animatable.View 
-        animation="fadeInUpBig" 
-        style={styles.footer}
-      >
+      <Animatable.View animation="fadeInUpBig" style={styles.footer}>
         <Text style={styles.text_footer}>Email</Text>
         <View style={styles.action}>
           <FontAwesome name="user-o" color="#05375a" size={20} />
           <TextInput
             placeholder="Your Email"
-            placeholderTextColor='#666666'
+            placeholderTextColor="#666666"
             style={styles.textInput}
             autoCapitalize="none"
             onChangeText={val => textInputChange(val)}
@@ -101,7 +98,7 @@ const SignUp = () => {
           <FontAwesome name="lock" color="#05375a" size={20} />
           <TextInput
             placeholder="Your Password"
-            placeholderTextColor='#666666'
+            placeholderTextColor="#666666"
             secureTextEntry={data.secureTextEntry ? true : false}
             style={styles.textInput}
             autoCapitalize="none"
@@ -116,12 +113,14 @@ const SignUp = () => {
           </TouchableOpacity>
         </View>
 
-        <Text style={[styles.text_footer, {marginTop: 35}]}>Confirm Password</Text>
+        <Text style={[styles.text_footer, {marginTop: 35}]}>
+          Confirm Password
+        </Text>
         <View style={styles.action}>
           <FontAwesome name="lock" color="#05375a" size={20} />
           <TextInput
             placeholder="Confirm Your Password"
-            placeholderTextColor='#666666'
+            placeholderTextColor="#666666"
             secureTextEntry={data.confirm_secureTextEntry ? true : false}
             style={styles.textInput}
             autoCapitalize="none"
@@ -169,7 +168,7 @@ const SignUp = () => {
       </Animatable.View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

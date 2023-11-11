@@ -6,11 +6,12 @@ export const authService = createApi({
   }),
   tagTypes: ['Auth'],
   endpoints: build => ({
-    login: build.query({
+    login: build.mutation({
       query: (token: string) => {
         return {
           url: 'auth/google/token',
-          params: {token},
+          body: {token},
+          method: 'POST',
         };
       },
     }),

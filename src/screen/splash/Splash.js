@@ -2,24 +2,42 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   Dimensions,
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import React, {useEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React from 'react';
 import {Avatar} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as Animatable from 'react-native-animatable';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useLoginMutation} from '../../store/services/AuthService';
 
 const Splash = () => {
-  const navigation = useNavigation();
+  const [login, {isLoading}] = useLoginMutation();
+
+  const onGoogleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signIn({});
+      const {idToken} = await GoogleSignin.getTokens();
+      console.log('id token', idToken);
+      // const {
+      //   user: {email, givenName, familyName, photo},
+      // } = userInfo;
+
+      // const userFullName = `${givenName} ${familyName}`;
+      // console.log('email', email, givenName, familyName, photo, idToken);
+      await login(idToken);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle='light-content' />
+      <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
         <Animatable.View animation="bounce">
           <Avatar.Image source={require('../../assets/logo.jpg')} size={250} />
@@ -29,7 +47,7 @@ const Splash = () => {
         <Text style={styles.title}>Stay Connected With Everyone!</Text>
         <Text style={styles.text}>Sign In With Account</Text>
         <View style={styles.button}>
-          <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+          <TouchableOpacity onPress={onGoogleLogin}>
             <LinearGradient
               colors={['#08d4c4', '#01ab9d']}
               style={styles.signIn}>

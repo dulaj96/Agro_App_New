@@ -6,32 +6,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import categories from '../../../../components/Categories';
 import COLORS from '../../../../components/Colors';
-import React, {useEffect, useState} from 'react';
-import fruits from '../../../../components/Fruits';
-import vegetables from '../../../../components/Vegetables';
-import paddies from '../../../../components/Paddies';
+import React, {useState} from 'react';
 
 const CategoryList = ({data = [], onSelect}) => {
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
+  console.log('data', data);
 
-  useEffect(() => {
-    onSelect(fruits);
-  }, [onSelect]);
-
-  const Select = index => {
+  const Select = (categoryId, index) => {
+    console.log('changed', categoryId);
     setSelectedCategoryIndex(index);
-    if (index === 0) {
-      console.log('fruits', fruits);
-      onSelect(fruits);
-    } else if (index === 1) {
-      console.log('veg', vegetables);
-      onSelect(vegetables);
-    } else {
-      console.log('paddies', paddies);
-      onSelect(paddies);
-    }
+    onSelect(categoryId);
   };
 
   return (
@@ -39,11 +24,11 @@ const CategoryList = ({data = [], onSelect}) => {
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.categoriesListContainer}>
-      {categories.map((category, index) => (
+      {data.map((category, index) => (
         <TouchableOpacity
-          key={category.id}
+          key={category._id}
           activeOpacity={0.8}
-          onPress={() => Select(index)}>
+          onPress={() => Select(category?._id, index)}>
           <View
             style={[
               styles.categoryBtn,
@@ -56,7 +41,9 @@ const CategoryList = ({data = [], onSelect}) => {
             ]}>
             <View style={styles.categoryBtnImg}>
               <Image
-                source={category.image}
+                source={{
+                  uri: `https://storage.googleapis.com/staging.agro-project-396117.appspot.com/${category?.image}`,
+                }}
                 style={{
                   height: 35,
                   width: 35,

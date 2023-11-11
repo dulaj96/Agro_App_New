@@ -8,14 +8,22 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useMemo} from 'react';
 import COLORS from '../../../components/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useGetCropQuery} from '../../../store/services/BackEndService';
 
 const DetailsScreen = ({navigation, route}) => {
   //navigation use to go back crop screen and route use to get the fruit & vegetables details, it get using params and pass to item
 
-  const item = route.params;
+  const {id} = route.params;
+  const {data, isLoading} = useGetCropQuery(id);
+
+  const item = useMemo(() => {
+    return data?.data;
+  }, [data]);
+
+  console.log('item', `${item?.image}`);
 
   return (
     <SafeAreaView style={{backgroundColor: COLORS.white}}>
@@ -36,7 +44,12 @@ const DetailsScreen = ({navigation, route}) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{height: 250, justifyContent: 'center', alignItems: 'center'}}>
-          <Image source={item.image} style={{height: 220, width: 220}} />
+          <Image
+            source={{
+              uri: `https://storage.googleapis.com/staging.agro-project-396117.appspot.com/${item?.image}`,
+            }}
+            style={{height: 220, width: 220}}
+          />
         </View>
 
         <View style={styles.details}>
@@ -48,7 +61,7 @@ const DetailsScreen = ({navigation, route}) => {
             }}>
             <Text
               style={{fontSize: 25, fontWeight: 'bold', color: COLORS.white}}>
-              {item.name}
+              {item?.name}
             </Text>
             <View style={styles.iconContainer}>
               <TouchableOpacity>
@@ -62,9 +75,7 @@ const DetailsScreen = ({navigation, route}) => {
           </View>
 
           <View>
-            <Text style={styles.detailsText}>
-             {item.information}
-            </Text>
+            <Text style={styles.detailsText}>{item?.information}</Text>
           </View>
         </View>
       </ScrollView>
@@ -97,7 +108,6 @@ const styles = StyleSheet.create({
   },
   detailsText: {
     marginTop: 20,
-    lineHeight: 22,
     fontSize: 16,
     color: COLORS.white,
     lineHeight: 22,

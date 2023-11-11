@@ -10,6 +10,10 @@ const authSlice = createSlice({
       state.user = user;
       state.token = token;
     },
+    clearStoreToken: state => {
+      state.user = {};
+      state.token = null;
+    },
   },
   extraReducers: builder => {
     builder.addMatcher(
@@ -22,6 +26,10 @@ const authSlice = createSlice({
   },
 });
 
-export const {setCredentials} = authSlice.actions;
+export const {setCredentials, clearStoreToken} = authSlice.actions;
+
+export const logout = (callbackFunc?: Function) => async (dispatch: any) => {
+  dispatch(clearStoreToken());
+};
 
 export default authSlice.reducer;

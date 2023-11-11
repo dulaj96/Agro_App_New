@@ -9,18 +9,17 @@ import {
   Image,
   FlatList,
   Dimensions,
-  ScrollView,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import COLORS from '../../../components/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import categories from '../../../components/Categories';
-import fruits from '../../../components/Fruits';
-import vegetables from '../../../components/Vegetables';
-import paddies from '../../../components/Paddies';
 import {useNavigation} from '@react-navigation/native';
-import {useGetCategoriesQuery} from '../../../store/services/BackEndService';
+import {
+  useGetCategoriesQuery,
+  useLazyGetCropsQuery,
+} from '../../../store/services/BackEndService';
 import CategoryList from './components/CategoryList';
 
 const {width} = Dimensions.get('screen');
@@ -28,15 +27,39 @@ const cardWidth = width / 2 - 20;
 
 const Crops = () => {
   const navigation = useNavigation();
-  const [data, setData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState();
 
   const {data: categoriesData, isLoading} = useGetCategoriesQuery();
+  const [getCrops, {data: crops, isLoading: loadingCrops}] =
+    useLazyGetCropsQuery();
+
+  useEffect(() => {
+    console.log('selected category changed', selectedCategory);
+    console.log('length', categoriesData);
+    if (selectedCategory) {
+      getCrops(selectedCategory);
+    } else if (
+      categoriesData?.data?.docs &&
+      categoriesData?.data?.docs?.length > 0
+    ) {
+      getCrops(categoriesData?.data.docs[0]._id);
+    }
+  }, [categoriesData, getCrops, selectedCategory]);
+
+  const cropsData = useMemo(() => {
+    return crops?.data?.docs;
+  }, [crops]);
 
   const Card = ({crop}) => {
     return (
       <View style={styles.card}>
         <View style={{alignItems: 'center', top: -10}}>
-          <Image source={crop.image} style={{height: 120, width: 120}} />
+          <Image
+            source={{
+              uri: `https://storage.googleapis.com/staging.agro-project-396117.appspot.com/${crop.image}`,
+            }}
+            style={{height: 120, width: 120}}
+          />
         </View>
         <View style={{marginHorizontal: 20}}>
           <Text style={{fontSize: 16, fontWeight: 'bold', color: COLORS.dark}}>
@@ -47,7 +70,7 @@ const Crops = () => {
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DetailsScreen', crop)}
+          onPress={() => navigation.navigate('DetailsScreen', {id: crop?._id})}
           style={{
             marginTop: 10,
             marginHorizontal: 10,
@@ -104,15 +127,26 @@ const Crops = () => {
       </View>
 
       <View style={{alignItems: 'center'}}>
-        <CategoryList data={categoriesData} onSelect={setData} />
+        {isLoading ? (
+          <ActivityIndicator size={'large'} />
+        ) : (
+          <CategoryList
+            data={categoriesData?.data?.docs}
+            onSelect={setSelectedCategory}
+          />
+        )}
       </View>
 
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        numColumns={2}
-        data={data}
-        renderItem={({item}) => <Card crop={item} />}
-      />
+      {loadingCrops ? (
+        <ActivityIndicator size={'large'} />
+      ) : (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          numColumns={2}
+          data={cropsData}
+          renderItem={({item}) => <Card crop={item} />}
+        />
+      )}
     </SafeAreaView>
   );
 };

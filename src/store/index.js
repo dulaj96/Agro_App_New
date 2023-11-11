@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
 import {authService} from './services/AuthService';
+import {backEndService} from './services/BackEndService';
 import AuthRootReducer from './auth';
 import {createMigrate, persistReducer, persistStore} from 'redux-persist';
 import {AnyAction} from 'redux';
@@ -20,6 +21,7 @@ const middlewares = getDefaultMiddleware(
 const appReducer = combineReducers({
   auth: AuthRootReducer,
   [authService.reducerPath]: authService.reducer,
+  [backEndService.reducerPath]: backEndService.reducer,
 });
 
 const rootReducer = (state: any, action: AnyAction) => {
@@ -49,7 +51,10 @@ const persistConfig: PersistConfig<ReducerType> = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: middlewares.concat(authService.middleware),
+  middleware: middlewares.concat(
+    authService.middleware,
+    backEndService.middleware,
+  ),
   preloadedState: undefined,
   devTools: true,
 });
