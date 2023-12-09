@@ -76,6 +76,7 @@ const DetailsScreen = ({navigation, route}) => {
 
           <View>
             <Text style={styles.detailsText}>{item?.information}</Text>
+            <Text style={styles.detailsText}>{item?.botanical}</Text>
           </View>
         </View>
       </ScrollView>

@@ -38,62 +38,78 @@
 
 // export default Home;
 
-import React, { useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  StatusBar,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import COLORS from '../../components/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
-import { Dropdown } from 'react-native-element-dropdown';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {Dropdown} from 'react-native-element-dropdown';
 
 const data = [
-  { label: 'Item 1', value: '1' },
-  { label: 'Item 2', value: '2' },
-  { label: 'Item 3', value: '3' },
-  { label: 'Item 4', value: '4' },
-  { label: 'Item 5', value: '5' },
-  { label: 'Item 6', value: '6' },
-  { label: 'Item 7', value: '7' },
-  { label: 'Item 8', value: '8' },
+  {label: 'Item 1', value: '1'},
+  {label: 'Item 2', value: '2'},
+  {label: 'Item 3', value: '3'},
+  {label: 'Item 4', value: '4'},
+  {label: 'Item 5', value: '5'},
+  {label: 'Item 6', value: '6'},
+  {label: 'Item 7', value: '7'},
+  {label: 'Item 8', value: '8'},
 ];
 
-
-const Home = () => {
-  const navigation = useNavigation();
+const Home = ({navigation, route}) => {
+  // const navigation = useNavigation();
 
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
+  // const route = useRoute();
+  const [pin, setPin] = useState(undefined);
+
+  useEffect(() => {
+    if (route.params) {
+      setPin(route.params);
+    }
+  }, [route.params]);
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
 
       <View style={styles.header}>
         <View>
-          <Text style={{ fontSize: 22, fontWeight: 'bold', color: COLORS.dark }}>
+          <Text style={{fontSize: 22, fontWeight: 'bold', color: COLORS.dark}}>
             Welcome To...
           </Text>
-          <Text style={{
-            fontSize: 38,
-            fontWeight: 'bold',
-            color: COLORS.primary,
-            marginTop: 5,
-          }}>
+          <Text
+            style={{
+              fontSize: 38,
+              fontWeight: 'bold',
+              color: COLORS.primary,
+              marginTop: 5,
+            }}>
             Agro Searching
           </Text>
         </View>
         <View>
-          <TouchableOpacity 
-          onPress={() => navigation.navigate("Store")}
-          style={{marginTop: 15}}
-          >
-          <MaterialIcons name="shopping-cart" size={28} color={COLORS.dark} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Store')}
+            style={{marginTop: 15}}>
+            <MaterialIcons name="shopping-cart" size={28} color={COLORS.dark} />
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={styles.container}>
         <Dropdown
-          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+          style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -113,11 +129,57 @@ const Home = () => {
             setIsFocus(false);
           }}
         />
-      </View>
+        {/* <TouchableOpacity
+          onPress={() => navigation.navigate('LocationScreen')}
+          style={{marginTop: 15}}>
+          <Text
+            style={{
+              fontSize: 28,
+              fontWeight: 'bold',
+              color: COLORS.primary,
+              marginTop: 5,
+            }}>
+            Select Location
+          </Text>
+        </TouchableOpacity> */}
 
+        <TouchableOpacity
+          onPress={() => navigation.navigate('LocationScreen')}
+          style={{
+            elevation: 8,
+            backgroundColor: '#009688',
+            borderRadius: 10,
+            paddingVertical: 10,
+            paddingHorizontal: 12,
+            marginTop: 20,
+          }}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: '#fff',
+              fontWeight: 'bold',
+              alignSelf: 'center',
+              textTransform: 'uppercase',
+            }}>
+            Select Location
+          </Text>
+        </TouchableOpacity>
+
+        <Text
+          style={{
+            marginTop: 12,
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: COLORS.dark,
+          }}>
+          {pin
+            ? `  * Location * -\nlatitude -> ${pin.latitude}\nlongitude -> ${pin.longitude}`
+            : '  * Location * -\nn/a'}
+        </Text>
+      </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   header: {
@@ -166,6 +228,6 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-})
+});
 
 export default Home;

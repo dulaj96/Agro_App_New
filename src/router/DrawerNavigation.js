@@ -34,12 +34,11 @@ const DrawerNavigation = () => {
       screenOptions={{
         headerShown: false,
         drawerActiveBackgroundColor: '#aa18ea',
-        drawerActiveTintColor: '#fff', 
-        drawerInactiveTintColor: '#333', 
+        drawerActiveTintColor: '#fff',
+        drawerInactiveTintColor: '#333',
         drawerLabelStyle: {marginLeft: -15, fontSize: 15},
       }}
-      drawerContent={props => <CustomDrawer {...props} />} 
-    >
+      drawerContent={props => <CustomDrawer {...props} />}>
       <Drawer.Screen
         name="FirstRow"
         component={FirstRow}
