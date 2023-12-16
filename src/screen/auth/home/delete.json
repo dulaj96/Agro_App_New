@@ -1,0 +1,79 @@
+{
+  "status": "OK",
+  "data": {
+    "input": {
+      "location": {
+        "longitude": 80.96673,
+        "latitude": 6.73812
+      },
+      "is_long_term": false,
+      "starting_month": 2
+    },
+    "properties": {
+      "objectid": 122,
+      "zone": "IM2a",
+      "climatic_zone": "INTERMEDIATE ZONE",
+      "agro_eco_zone": "IM2a",
+      "agro_eco_r": "IM2a",
+      "final_id": null,
+      "terrain": "steep, Hilly & rolling",
+      "major_soil": "RBL & RYP soils",
+      "land_use": "Export agriculture Crops, Mixed Home Gardens, Tea, Vegetables",
+      "anualrfmm": ">1800",
+      "st_area(shape)": 0.033790508929347395,
+      "st_length(shape)": 1.854290795579208
+    },
+    "zone": "intermediate",
+    "count": 1,
+    "crops": [
+      {
+        "_id": "656c302884d21eb3f59a1048",
+        "name": "Carrot",
+        "category": {
+          "_id": "656c00f56071657ba779a096",
+          "name": "Vegetables",
+          "image": "categories/images/Vegetables.jpeg",
+          "createdAt": "2023-12-03T04:15:49.878Z",
+          "updatedAt": "2023-12-03T04:15:49.878Z",
+          "__v": 0
+        },
+        "image": "crops/images/656c302884d21eb3f59a1048.jpeg",
+        "botanical": "Daucus carota",
+        "varieties": ["New Kuroda", "Lanka Carrot"],
+        "factors": {
+          "rainfall": {
+            "min": 1500,
+            "max": 3000
+          },
+          "zones": [
+            {
+              "zone": "intermediate",
+              "months": [1, 10, 11, 12, 2, 3, 4, 5, 6, 7, 8, 9]
+            },
+            {
+              "zone": "dry",
+              "months": [10]
+            }
+          ],
+          "soil": {
+            "min": 6,
+            "max": 6.8
+          },
+          "duration": {
+            "min": 85,
+            "max": 100
+          },
+          "long_term": false
+        },
+        "other": {
+          "tutorials": [],
+          "videos": [],
+          "extra": "crops/markdowns/656c302884d21eb3f59a1048.md"
+        },
+        "createdAt": "2023-12-03T07:37:13.363Z",
+        "updatedAt": "2023-12-03T07:37:13.363Z",
+        "__v": 0
+      }
+    ]
+  }
+}

@@ -52,16 +52,21 @@ import COLORS from '../../components/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Dropdown} from 'react-native-element-dropdown';
+import {RadioButton, Button} from 'react-native-paper';
 
 const data = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
+  {label: 'January', value: '1'},
+  {label: 'February', value: '2'},
+  {label: 'March', value: '3'},
+  {label: 'April', value: '4'},
+  {label: 'May', value: '5'},
+  {label: 'June', value: '6'},
+  {label: 'July', value: '7'},
+  {label: 'August', value: '8'},
+  {label: 'September', value: '9'},
+  {label: 'Octomber', value: '10'},
+  {label: 'November', value: '11'},
+  {label: 'December', value: '12'},
 ];
 
 const Home = ({navigation, route}) => {
@@ -69,6 +74,7 @@ const Home = ({navigation, route}) => {
 
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(false);
 
   // const route = useRoute();
   const [pin, setPin] = useState(undefined);
@@ -108,27 +114,6 @@ const Home = ({navigation, route}) => {
       </View>
 
       <View style={styles.container}>
-        <Dropdown
-          style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          iconStyle={styles.iconStyle}
-          data={data}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={!isFocus ? 'Select item' : '...'}
-          searchPlaceholder="Search..."
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={item => {
-            setValue(item.value);
-            setIsFocus(false);
-          }}
-        />
         {/* <TouchableOpacity
           onPress={() => navigation.navigate('LocationScreen')}
           style={{marginTop: 15}}>
@@ -143,7 +128,7 @@ const Home = ({navigation, route}) => {
           </Text>
         </TouchableOpacity> */}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate('LocationScreen')}
           style={{
             elevation: 8,
@@ -163,9 +148,9 @@ const Home = ({navigation, route}) => {
             }}>
             Select Location
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <Text
+        {/* <Text
           style={{
             marginTop: 12,
             fontSize: 18,
@@ -176,6 +161,141 @@ const Home = ({navigation, route}) => {
             ? `  * Location * -\nlatitude -> ${pin.latitude}\nlongitude -> ${pin.longitude}`
             : '  * Location * -\nn/a'}
         </Text>
+        <Text
+          style={{
+            marginTop: 12,
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: COLORS.dark,
+          }}>
+          {value
+            ? `  * Starting Month * -\n${value}`
+            : '  * Starting Month * -\nn/a'}
+        </Text> */}
+
+        {/* <Text>Selected Value: {selectedValue}</Text>
+        <Text>Selected Value: {selectedValue ? 'aaa' : 'ss'}</Text> */}
+
+        {/* <Button
+          icon="map-marker"
+          mode="contained"
+          buttonColor="#009688"
+          style={{
+            paddingVertical: 4,
+            borderRadius: 60,
+            paddingHorizontal: 12,
+            marginTop: 20,
+          }}
+          onPress={() => navigation.navigate('LocationScreen')}>
+          Select Location
+        </Button> */}
+
+        <View style={{marginTop: 8, paddingHorizontal: 10}}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#005E55',
+            }}>
+            Select crop type
+          </Text>
+          <RadioButton.Group
+            style={{
+              marginTop: 30,
+            }}
+            onValueChange={value => setSelectedValue(value)}
+            value={selectedValue}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <RadioButton value={false} color="green" />
+              <TouchableOpacity
+                activeOpactity={1}
+                onPress={() => {
+                  setSelectedValue(false);
+                }}>
+                <Text style={styles.radioGroupItem}>Short Term</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <RadioButton value={true} color="green" />
+              <TouchableOpacity
+                activeOpactity={1}
+                onPress={() => {
+                  setSelectedValue(true);
+                }}>
+                <Text style={styles.radioGroupItem}>Long Term</Text>
+              </TouchableOpacity>
+            </View>
+          </RadioButton.Group>
+        </View>
+
+        <Dropdown
+          style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={data}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select Starting Month' : '...'}
+          searchPlaceholder="Search..."
+          value={value}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setValue(item.value);
+            setIsFocus(false);
+          }}
+        />
+
+        <Button
+          icon="map-marker"
+          mode="contained"
+          uppercase={true}
+          buttonColor="#009688"
+          style={{
+            marginTop: 20,
+          }}
+          onPress={() => navigation.navigate('LocationScreen')}>
+          Select Location
+        </Button>
+
+        <Button
+          icon="crosshairs"
+          mode="contained"
+          uppercase={true}
+          buttonColor="#002FCA"
+          style={{
+            marginTop: 20,
+          }}
+          onPress={() => {
+            if (!value) {
+              Alert.alert('Month', 'Please select starting month first', null, {
+                cancelable: true,
+              });
+              return;
+            }
+            if (!pin) {
+              Alert.alert('Location', 'Please select location first', null, {
+                cancelable: true,
+              });
+              return;
+            }
+            navigation.navigate('SelectionsScreen', {
+              inputs: {
+                location: {
+                  longitude: pin.longitude,
+                  latitude: pin.latitude,
+                },
+                is_long_term: selectedValue,
+                starting_month: value,
+              },
+            });
+          }}>
+          GET BEST CROPS
+        </Button>
       </View>
     </SafeAreaView>
   );
@@ -192,7 +312,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 16,
-    justifyContent: 'center',
+
     alignContent: 'center',
   },
   dropdown: {
@@ -200,7 +320,9 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 0.5,
     borderRadius: 8,
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
+    marginTop: 12,
+    marginHorizontal: 8,
   },
   icon: {
     marginRight: 5,
@@ -227,6 +349,10 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+  },
+  radioGroupItem: {
+    fontSize: 16,
+    color: COLORS.dark,
   },
 });
 

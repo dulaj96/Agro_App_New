@@ -49,8 +49,21 @@ export const backEndService = createApi({
         };
       },
     }),
+    getSelections: build.query({
+      query: selection => {
+        return {
+          url: '/select',
+          method: 'GET',
+          params: {selection: JSON.stringify(selection)},
+        };
+      },
+    }),
   }),
 });
 
-export const {useGetCategoriesQuery, useLazyGetCropsQuery, useGetCropQuery} =
-  backEndService;
+export const {
+  useGetCategoriesQuery,
+  useLazyGetCropsQuery,
+  useGetCropQuery,
+  useGetSelectionsQuery,
+} = backEndService;

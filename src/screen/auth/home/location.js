@@ -1,51 +1,18 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Button,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
-import React, {useMemo, useState} from 'react';
+import {View, Text, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
 import COLORS from '../../../components/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {useGetCropQuery} from '../../../store/services/BackEndService';
 import MapView from 'react-native-maps';
 import {Marker} from 'react-native-maps';
+import {Button} from 'react-native-paper';
 
 const LocationScreen = ({navigation, route}) => {
-  //navigation use to go back crop screen and route use to get the fruit & vegetables details, it get using params and pass to item
-
-  //   const {id} = route.params;
-  //   const {data, isLoading} = useGetCropQuery(id);
-
-  //   const item = useMemo(() => {
-  //     return data?.data;
-  //   }, [data]);
-
   const [pin, setPin] = useState({
     latitude: 6.913829092828117,
     longitude: 79.86725941300392,
-    // latitudeDelta: 0.0922,
-    // longitudeDelta: 0.0421,
     latitudeDelta: 0.9522,
     longitudeDelta: 3.6221,
   });
-  //   const tokyoRegion = {
-  //     latitude: 37.78825,
-  //     longitude: -122.4324,
-  //     latitudeDelta: 0.0922,
-  //     longitudeDelta: 0.0421,
-  //   };
-
-  //   const [pin, setPin] = useState({
-  //     latitude: 37.785841354212224,
-  //     longitude: -122.43005711585283,
-  //   });
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -59,99 +26,44 @@ const LocationScreen = ({navigation, route}) => {
           onPress={navigation.goBack}
         />
         <Text style={{fontSize: 20, fontWeight: 'bold', color: COLORS.dark}}>
-          Details
+          Select Location
         </Text>
       </View>
 
       <View style={styles.container}>
-        <MapView
-          style={styles.map}
-          //specify our coordinates.
-          initialRegion={pin}>
+        <MapView style={styles.map} initialRegion={pin}>
           <Marker
             draggable
             coordinate={pin}
             onDragEnd={e => {
-              console.log(e.nativeEvent.coordinate);
               setPin(e.nativeEvent.coordinate);
             }}
           />
         </MapView>
-        {/* <Button
-          onPress={() => Alert.alert('Button pressed')}
-          title="Get"
-          color="#841584"
-        /> */}
-        <TouchableOpacity
-          onPress={() => {
-            // navigation.navigate({
-            //   name: 'Home',
-            //   data: 'aaaaaa',
-            //   merge: true,
-            // });
-            navigation.navigate('Home', pin, true);
-          }}
+        <View
           style={{
-            elevation: 8,
-            backgroundColor: '#009688',
-            borderRadius: 10,
-            paddingVertical: 10,
-            paddingHorizontal: 12,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            flex: 1,
+            justifyContent: 'flex-end',
           }}>
-          <Text
+          <Button
+            icon="map-marker"
+            mode="contained"
+            uppercase={true}
+            buttonColor="#009688"
             style={{
-              fontSize: 18,
-              color: '#fff',
-              fontWeight: 'bold',
-              alignSelf: 'center',
-              textTransform: 'uppercase',
-            }}>
-            Select Location
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* <View style={styles.header}>
-        <MaterialIcons
-          name="arrow-back-ios"
-          size={28}
-          color={COLORS.dark}
-          onPress={navigation.goBack}
-        />
-        <Text style={{fontSize: 20, fontWeight: 'bold', color: COLORS.dark}}>
-          Location
-        </Text>
-      </View>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.details}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{fontSize: 25, fontWeight: 'bold', color: COLORS.white}}>
-              location
-            </Text>
-          </View>
+              marginVertical: 32,
+              marginHorizontal: 32,
+            }}
+            onPress={() => navigation.navigate('Home', pin, true)}>
+            Select This Location
+          </Button>
         </View>
-        <Text style={{fontSize: 25, fontWeight: 'bold', color: COLORS.primary}}>
-          location map
-        </Text>
-
-        <MapView
-          style={styles.map}
-          //specify our coordinates.
-          initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        />
-      </ScrollView> */}
+      </View>
     </SafeAreaView>
   );
 };

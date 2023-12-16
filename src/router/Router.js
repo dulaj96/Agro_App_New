@@ -3,6 +3,7 @@ import Splash from '../screen/splash/Splash';
 import SignUp from '../screen/auth/SignUp';
 import SignIn from '../screen/auth/SignIn';
 import DetailsScreen from '../screen/auth/crops/DetailsScreen';
+import SelectionsScreen from '../screen/auth/home/selections';
 import LocationScreen from '../screen/auth/home/location';
 import BottomNavigator from './BottomNavigator';
 import {NavigationContainer} from '@react-navigation/native';
@@ -56,6 +57,11 @@ const Router = () => {
           options={{headerShown: false}}
           name="LocationScreen"
           component={LocationScreen}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="SelectionsScreen"
+          component={SelectionsScreen}
         />
       </Stack.Group>
     );
