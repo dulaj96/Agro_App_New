@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
-import {useDispatch} from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import {logout} from '../../../store/auth/AuthSlice.store';
 
 export const imagesDataURL = [
@@ -28,6 +28,8 @@ export const imagesDataURL = [
 const Profile = () => {
   const [selectImage, setSelectImage] = useState(imagesDataURL[0]);
   const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.auth.user);
+  console.log('user', user);
 
   const bottomSheetModalRef = useRef(null);
 
@@ -78,7 +80,7 @@ const Profile = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{alignItems: 'center', marginVertical: 22}}>
           <Image
-            source={{uri: selectImage}}
+            source={{uri: user?.photo}}
             style={{
               height: 170,
               width: 170,
@@ -122,7 +124,7 @@ const Profile = () => {
           <LinearGradient
             colors={['#8ee8d4', '#32806f']}
             style={styles.nickName}>
-            <Text style={styles.textSign}>Dulaj Mithun</Text>
+            <Text style={styles.textSign}>{user?.name}</Text>
             {/* <MaterialIcons name="navigate-next" color="#fff" size={20} /> */}
           </LinearGradient>
         </View>
