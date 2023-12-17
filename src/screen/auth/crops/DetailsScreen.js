@@ -12,6 +12,7 @@ import React, {useMemo} from 'react';
 import COLORS from '../../../components/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useGetCropQuery} from '../../../store/services/BackEndService';
+import MarkdownViewer from "../../../components/MarkdownViewer";
 
 const DetailsScreen = ({navigation, route}) => {
   //navigation use to go back crop screen and route use to get the fruit & vegetables details, it get using params and pass to item
@@ -26,7 +27,7 @@ const DetailsScreen = ({navigation, route}) => {
   console.log('item', `${item?.image}`);
 
   return (
-    <SafeAreaView style={{backgroundColor: COLORS.white}}>
+    <SafeAreaView style={{backgroundColor: COLORS.white, flex: 1}}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
 
       <View style={styles.header}>
@@ -41,7 +42,7 @@ const DetailsScreen = ({navigation, route}) => {
         </Text>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <View showsVerticalScrollIndicator={false} style={{flex: 1}}>
         <View
           style={{height: 250, justifyContent: 'center', alignItems: 'center'}}>
           <Image
@@ -63,6 +64,7 @@ const DetailsScreen = ({navigation, route}) => {
               style={{fontSize: 25, fontWeight: 'bold', color: COLORS.white}}>
               {item?.name}
             </Text>
+            <Text style={styles.detailsText}>{item?.botanical}</Text>
             <View style={styles.iconContainer}>
               <TouchableOpacity>
                 <MaterialIcons
@@ -74,12 +76,11 @@ const DetailsScreen = ({navigation, route}) => {
             </View>
           </View>
 
-          <View>
-            <Text style={styles.detailsText}>{item?.information}</Text>
-            <Text style={styles.detailsText}>{item?.botanical}</Text>
-          </View>
+          <ScrollView style={{flex: 1, marginTop: 10}}>
+            <MarkdownViewer link={item?.other?.extra} />
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -98,6 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
+    flex: 1,
   },
   iconContainer: {
     backgroundColor: COLORS.white,

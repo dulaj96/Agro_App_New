@@ -32,10 +32,12 @@ const Crops = () => {
   const {data: categoriesData, isLoading} = useGetCategoriesQuery();
   const [getCrops, {data: crops, isLoading: loadingCrops}] =
     useLazyGetCropsQuery();
+  console.log('loading', loadingCrops);
 
   useEffect(() => {
-    console.log('selected category changed', selectedCategory);
-    console.log('length', categoriesData);
+    // console.log('selected category changed', selectedCategory);
+    console.log('length', categoriesData.length, selectedCategory);
+    console.log('crops', crops?.data?.docs[0]);
     if (selectedCategory) {
       getCrops(selectedCategory);
     } else if (

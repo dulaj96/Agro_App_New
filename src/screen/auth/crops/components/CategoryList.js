@@ -11,7 +11,6 @@ import React, {useState} from 'react';
 
 const CategoryList = ({data = [], onSelect}) => {
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
-  console.log('data', data);
 
   const Select = (categoryId, index) => {
     console.log('changed', categoryId);

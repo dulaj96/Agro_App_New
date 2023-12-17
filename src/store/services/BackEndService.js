@@ -38,7 +38,11 @@ export const backEndService = createApi({
       query: categoryId => {
         return {
           url: '/crops',
-          params: {categoryId},
+          params: {
+            data: JSON.stringify({
+              filter: {category: {_id: categoryId}},
+            }),
+          },
         };
       },
     }),
